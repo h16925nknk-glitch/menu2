@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f1d19">
+  <title>BOYOROU | English Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">FUKUI · AOYAMA</p>
+    <h1>BOYOROU</h1>
+    <p class="subtitle">Seasonal cuisine from the mountains, sea, and countryside of Fukui.</p>
+  </header>
+
+  <div id="loading" class="loading">Loading menu…</div>
+  <div id="errorBox" class="error-box" hidden></div>
+
+  <section id="recommendedSection" class="recommended-section" hidden>
+    <div class="section-heading centered">
+      <p class="eyebrow dark">CHEF'S SELECTION</p>
+      <h2>Recommended</h2>
+    </div>
+    <div id="recommendedGrid" class="recommended-grid"></div>
+  </section>
+
+  <nav id="categoryNav" class="category-nav" aria-label="Menu categories"></nav>
+  <main id="menuRoot" class="menu-root"></main>
+
+  <div id="imageModal" class="image-modal" hidden>
+    <button id="modalClose" class="modal-close" type="button" aria-label="Close">×</button>
+    <img id="modalImage" alt="">
+  </div>
+
+  <footer>
+    <p>All prices include 10% consumption tax.</p>
+    <p>A 10% service charge will be added during dinner service.</p>
+  </footer>
+
+  <script src="menu-data.js"></script>
+  <script type="module" src="public.js"></script>
+</body>
+</html>
