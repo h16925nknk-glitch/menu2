@@ -8,7 +8,7 @@ import { getFirestore, doc } from "https://www.gstatic.com/firebasejs/12.16.0/fi
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyAtqq9NmhM9x82ZjvGgVJE3MLEUM-E4pQK",
+  apiKey: "AIzaSyAtqq9NmhM9x82ZjvGgVJE3MLEUM-E4pQk",
   authDomain: "sake-flow.firebaseapp.com",
   projectId: "sake-flow",
   storageBucket: "sake-flow.firebasestorage.app",
