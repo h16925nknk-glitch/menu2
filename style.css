@@ -117,7 +117,7 @@ body {
     "Hiragino Mincho ProN",
     serif;
 
-  font-size: clamp(3.5rem, 12vw, 6.5rem);
+  font-size: clamp(2.5rem, 9vw, 5rem);
 
   font-weight: 600;
 
