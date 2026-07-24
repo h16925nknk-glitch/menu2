@@ -7,8 +7,9 @@ import {
 import { getFirestore, doc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyAtqq9NmhM9x82ZjvGgVJE3MLEUM-E4pQK",
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAtqq9NmhM9x82ZjvGgVJE3MLEUM-E4pQk",
   authDomain: "sake-flow.firebaseapp.com",
   projectId: "sake-flow",
   storageBucket: "sake-flow.firebasestorage.app",
