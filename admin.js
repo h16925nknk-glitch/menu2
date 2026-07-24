@@ -1,4 +1,4 @@
-import { auth, authReady, firebaseConfig, menuDocument, storage } from "./firebase.js";
+import { auth, authReady, firebaseConfig, menuDocument, storage } from "./firebase.js?v=2";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
