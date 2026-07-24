@@ -1,15 +1,15 @@
 import { menuDocument } from "./firebase.js";
 import { onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-const loading = document.getElementById("loading");
-const errorBox = document.getElementById("errorBox");
-const menuRoot = document.getElementById("menuRoot");
-const categoryNav = document.getElementById("categoryNav");
-const recommendedSection = document.getElementById("recommendedSection");
-const recommendedGrid = document.getElementById("recommendedGrid");
-const imageModal = document.getElementById("imageModal");
-const modalImage = document.getElementById("modalImage");
-const modalClose = document.getElementById("modalClose");
+const $ = (id) => document.getElementById(id);
+const loading = $("loading");
+const errorBox = $("errorBox");
+const menuRoot = $("menuRoot");
+const categoryNav = $("categoryNav");
+const recommendedSection = $("recommendedSection");
+const recommendedGrid = $("recommendedGrid");
+const imageModal = $("imageModal");
+const modalImage = $("modalImage");
 
 const yen = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -19,29 +19,18 @@ const yen = new Intl.NumberFormat("en-US", {
 
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
   }[char]));
 }
 
 function normalizeItem(item = {}) {
   if (Array.isArray(item)) {
     return {
-      id: crypto.randomUUID(),
-      name: item[0] || "",
-      meta: item[1] || "",
-      price: Number(item[2]) || 0,
-      imageUrl: "",
-      recommended: false,
-      seasonal: false,
-      soldOut: false,
-      hidden: false
+      id: crypto.randomUUID(), name: item[0] || "", meta: item[1] || "",
+      price: Number(item[2]) || 0, imageUrl: "", recommended: false,
+      seasonal: false, soldOut: false, hidden: false
     };
   }
-
   return {
     id: item.id || crypto.randomUUID(),
     name: item.name || "",
@@ -78,49 +67,28 @@ function closeModal() {
   document.body.classList.remove("modal-open");
 }
 
-modalClose.addEventListener("click", closeModal);
-imageModal.addEventListener("click", (event) => {
-  if (event.target === imageModal) closeModal();
-});
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeModal();
-});
+$("modalClose").addEventListener("click", closeModal);
+imageModal.addEventListener("click", (event) => event.target === imageModal && closeModal());
+document.addEventListener("keydown", (event) => event.key === "Escape" && closeModal());
 
 function createCard(item, compact = false) {
-  const article = document.createElement("article");
-  article.className = [
-    compact ? "recommended-card" : "menu-item",
-    item.imageUrl ? "has-image" : "",
-    item.soldOut ? "is-sold-out" : ""
-  ].filter(Boolean).join(" ");
-
+  const card = document.createElement("article");
+  card.className = [compact ? "recommended-card" : "menu-item", item.imageUrl ? "has-image" : "", item.soldOut ? "is-sold-out" : ""].filter(Boolean).join(" ");
   const badges = [
     item.recommended ? '<span class="badge recommended-badge">Recommended</span>' : "",
     item.seasonal ? '<span class="badge seasonal-badge">Seasonal</span>' : ""
   ].join("");
 
-  article.innerHTML = `
-    ${item.imageUrl ? `
-      <button class="image-button" type="button" aria-label="Enlarge ${escapeHtml(item.name)}">
-        <img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" loading="lazy">
-      </button>
-    ` : ""}
+  card.innerHTML = `
+    ${item.imageUrl ? `<button class="image-button" type="button"><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" loading="lazy"></button>` : ""}
     <div class="item-body">
-      <div class="title-row">
-        <h3>${escapeHtml(item.name)}</h3>
-        <div class="badges">${badges}</div>
-      </div>
+      <div class="title-row"><h3>${escapeHtml(item.name)}</h3><div class="badges">${badges}</div></div>
       ${item.meta ? `<p class="item-meta">${escapeHtml(item.meta)}</p>` : ""}
-      <div class="item-bottom">
-        ${item.soldOut ? '<span class="sold-out-label">SOLD OUT</span>' : "<span></span>"}
-        <strong>${yen.format(item.price)}</strong>
-      </div>
-    </div>
-  `;
+      <div class="item-bottom">${item.soldOut ? '<span class="sold-out-label">SOLD OUT</span>' : "<span></span>"}<strong>${yen.format(item.price)}</strong></div>
+    </div>`;
 
-  const button = article.querySelector(".image-button");
-  if (button) button.addEventListener("click", () => openModal(item.imageUrl, item.name));
-  return article;
+  card.querySelector(".image-button")?.addEventListener("click", () => openModal(item.imageUrl, item.name));
+  return card;
 }
 
 function render(sections) {
@@ -128,68 +96,48 @@ function render(sections) {
   categoryNav.innerHTML = "";
   recommendedGrid.innerHTML = "";
   recommendedSection.hidden = true;
-  errorBox.hidden = true;
 
-  const visibleSections = normalizeSections(sections)
-    .map((section) => ({
-      ...section,
-      items: section.items.filter((item) => !item.hidden)
-    }))
-    .filter((section) => section.items.length > 0);
+  const visible = normalizeSections(sections)
+    .map((section) => ({ ...section, items: section.items.filter((item) => !item.hidden) }))
+    .filter((section) => section.items.length);
 
-  const recommendations = visibleSections.flatMap((section) =>
-    section.items.filter((item) => item.recommended)
-  );
-
-  if (recommendations.length) {
+  const recommended = visible.flatMap((section) => section.items.filter((item) => item.recommended));
+  if (recommended.length) {
     recommendedSection.hidden = false;
-    recommendations.forEach((item) => recommendedGrid.appendChild(createCard(item, true)));
+    recommended.forEach((item) => recommendedGrid.appendChild(createCard(item, true)));
   }
 
-  visibleSections.forEach((section) => {
-    const link = document.createElement("a");
-    link.href = `#${section.id}`;
-    link.textContent = section.title;
-    categoryNav.appendChild(link);
+  visible.forEach((section) => {
+    const nav = document.createElement("a");
+    nav.href = `#${section.id}`;
+    nav.textContent = section.title;
+    categoryNav.appendChild(nav);
 
-    const sectionElement = document.createElement("section");
-    sectionElement.className = "menu-section";
-    sectionElement.id = section.id;
-    sectionElement.innerHTML = `
-      <div class="section-heading">
-        <h2>${escapeHtml(section.title)}</h2>
-        ${section.description ? `<p>${escapeHtml(section.description)}</p>` : ""}
-      </div>
-      <div class="menu-list"></div>
-    `;
-
-    const list = sectionElement.querySelector(".menu-list");
+    const el = document.createElement("section");
+    el.id = section.id;
+    el.className = "menu-section";
+    el.innerHTML = `<div class="section-heading"><h2>${escapeHtml(section.title)}</h2>${section.description ? `<p>${escapeHtml(section.description)}</p>` : ""}</div><div class="menu-list"></div>`;
+    const list = el.querySelector(".menu-list");
     section.items.forEach((item) => list.appendChild(createCard(item)));
-    menuRoot.appendChild(sectionElement);
+    menuRoot.appendChild(el);
   });
 
-  if (!visibleSections.length) {
+  if (!visible.length) {
     errorBox.textContent = "The menu is currently being prepared.";
     errorBox.hidden = false;
   }
 }
 
-function fallbackData() {
-  return Array.isArray(window.MENU_DATA) ? window.MENU_DATA : [];
-}
+const fallback = () => Array.isArray(window.MENU_DATA) ? window.MENU_DATA : [];
 
-onSnapshot(
-  menuDocument,
-  (snapshot) => {
-    loading.hidden = true;
-    const data = snapshot.exists() ? snapshot.data() : null;
-    render(Array.isArray(data?.sections) ? data.sections : fallbackData());
-  },
-  (error) => {
-    console.error(error);
-    loading.hidden = true;
-    errorBox.textContent = "Firebase could not be reached. Showing the backup menu.";
-    errorBox.hidden = false;
-    render(fallbackData());
-  }
-);
+onSnapshot(menuDocument, (snapshot) => {
+  loading.hidden = true;
+  const data = snapshot.exists() ? snapshot.data() : null;
+  render(Array.isArray(data?.sections) ? data.sections : fallback());
+}, (error) => {
+  console.error("Firestore read failed", error);
+  loading.hidden = true;
+  errorBox.textContent = "The live menu could not be loaded. Showing the backup menu.";
+  errorBox.hidden = false;
+  render(fallback());
+});

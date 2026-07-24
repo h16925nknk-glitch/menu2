@@ -7,117 +7,73 @@
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <header class="admin-header">
-    <div>
-      <p class="kicker">BOYOROU</p>
-      <h1>メニュー管理</h1>
-      <p>写真・おすすめ・売り切れ・並び順を編集できます。</p>
+<header class="admin-header">
+  <div><p class="kicker">BOYOROU</p><h1>メニュー管理</h1><p>料理、写真、売り切れ、並び順を編集できます。</p></div>
+  <a href="index.html" target="_blank" rel="noopener">公開メニューを見る</a>
+</header>
+
+<main>
+  <section id="loginPanel" class="login-panel">
+    <div><strong>管理者ログイン</strong><p>Firebaseに登録済みのメールアドレスとパスワードを使用します。</p></div>
+    <input id="email" type="email" autocomplete="username" value="h16925nknk@icloud.com" placeholder="メールアドレス">
+    <input id="password" type="password" autocomplete="current-password" placeholder="パスワード">
+    <button id="loginButton" class="primary">ログイン</button>
+    <button id="resetPasswordButton">パスワード再設定</button>
+    <button id="logoutButton" hidden>ログアウト</button>
+  </section>
+
+  <details class="diagnostics">
+    <summary>ログインできない場合の診断情報</summary>
+    <pre id="diagnosticsText"></pre>
+  </details>
+
+  <section class="toolbar">
+    <button id="addSectionButton" class="primary">＋ カテゴリー追加</button>
+    <button id="saveDraftButton">下書き保存</button>
+    <button id="loadDraftButton">下書き読込</button>
+    <button id="resetButton">公開中に戻す</button>
+    <button id="publishButton" class="publish" disabled>更新する</button>
+  </section>
+
+  <p id="status" class="status" aria-live="polite"></p>
+  <div id="editor"></div>
+</main>
+
+<template id="sectionTemplate">
+  <section class="section-card">
+    <div class="section-toolbar"><div><button type="button" class="section-up">↑ 上へ</button><button type="button" class="section-down">↓ 下へ</button></div><button type="button" class="delete-section danger">カテゴリー削除</button></div>
+    <div class="section-fields">
+      <label>カテゴリー名<input class="section-title" type="text"></label>
+      <label>カテゴリーID<input class="section-id" type="text"></label>
+      <label class="wide">説明<textarea class="section-description" rows="2"></textarea></label>
     </div>
-    <a href="index.html" target="_blank" rel="noopener">公開メニューを見る</a>
-  </header>
+    <div class="items-header"><h2>料理</h2><button type="button" class="add-item primary small">＋ 料理追加</button></div>
+    <div class="items"></div>
+  </section>
+</template>
 
-  <main>
-    <section id="loginPanel" class="login-panel">
-      <div>
-        <strong>管理者ログイン</strong>
-        <p>Firebaseに登録したメールアドレスとパスワードを入力してください。</p>
+<template id="itemTemplate">
+  <article class="item-editor">
+    <div class="item-move"><button type="button" class="item-up">↑</button><button type="button" class="item-down">↓</button></div>
+    <div class="item-main">
+      <div class="item-fields">
+        <label>料理名<input class="item-name" type="text"></label>
+        <label>産地・説明<input class="item-meta" type="text"></label>
+        <label>価格<input class="item-price" type="number" min="0" step="10"></label>
       </div>
-      <input id="email" type="email" autocomplete="username" placeholder="メールアドレス">
-      <input id="password" type="password" autocomplete="current-password" placeholder="パスワード">
-      <button id="loginButton" class="primary">ログイン</button>
-      <button id="logoutButton" hidden>ログアウト</button>
-    </section>
-
-    <section class="toolbar">
-      <button id="addSectionButton" class="primary">＋ カテゴリー追加</button>
-      <button id="saveDraftButton">下書き保存</button>
-      <button id="loadDraftButton">下書き読込</button>
-      <button id="resetButton">公開中に戻す</button>
-      <button id="publishButton" class="publish" disabled>更新する</button>
-    </section>
-
-    <p id="status" class="status" aria-live="polite"></p>
-    <div id="editor"></div>
-  </main>
-
-  <template id="sectionTemplate">
-    <section class="section-card">
-      <div class="section-toolbar">
-        <div>
-          <button type="button" class="section-up">↑ 上へ</button>
-          <button type="button" class="section-down">↓ 下へ</button>
-        </div>
-        <button type="button" class="delete-section danger">カテゴリー削除</button>
+      <div class="checks">
+        <label><input class="item-recommended" type="checkbox"> おすすめ</label>
+        <label><input class="item-seasonal" type="checkbox"> 季節限定</label>
+        <label><input class="item-soldout" type="checkbox"> 売り切れ</label>
+        <label><input class="item-hidden" type="checkbox"> 非表示</label>
       </div>
+      <div class="photo-row"><label class="file-label">写真を選択<input class="item-file" type="file" accept="image/jpeg,image/png,image/webp"></label><button type="button" class="remove-image">写真を削除</button><span class="upload-state"></span></div>
+    </div>
+    <div class="item-side"><div class="preview-box"><img class="preview-image" alt="" hidden><div class="no-image">写真なし</div></div><button type="button" class="delete-item danger">料理削除</button></div>
+  </article>
+</template>
 
-      <div class="section-fields">
-        <label>カテゴリー名
-          <input class="section-title" type="text" placeholder="Seasonal Sashimi">
-        </label>
-        <label>カテゴリーID
-          <input class="section-id" type="text" placeholder="sashimi">
-        </label>
-        <label class="wide">説明
-          <textarea class="section-description" rows="2"></textarea>
-        </label>
-      </div>
-
-      <div class="items-header">
-        <h2>料理</h2>
-        <button type="button" class="add-item primary small">＋ 料理追加</button>
-      </div>
-      <div class="items"></div>
-    </section>
-  </template>
-
-  <template id="itemTemplate">
-    <article class="item-editor">
-      <div class="item-move">
-        <button type="button" class="item-up">↑</button>
-        <button type="button" class="item-down">↓</button>
-      </div>
-
-      <div class="item-main">
-        <div class="item-fields">
-          <label>料理名
-            <input class="item-name" type="text">
-          </label>
-          <label>産地・説明
-            <input class="item-meta" type="text">
-          </label>
-          <label>価格
-            <input class="item-price" type="number" min="0" step="10">
-          </label>
-        </div>
-
-        <div class="checks">
-          <label><input class="item-recommended" type="checkbox"> おすすめ</label>
-          <label><input class="item-seasonal" type="checkbox"> 季節限定</label>
-          <label><input class="item-soldout" type="checkbox"> 売り切れ</label>
-          <label><input class="item-hidden" type="checkbox"> 非表示</label>
-        </div>
-
-        <div class="photo-row">
-          <label class="file-label">
-            写真を選択
-            <input class="item-file" type="file" accept="image/jpeg,image/png,image/webp">
-          </label>
-          <button type="button" class="remove-image">写真を削除</button>
-          <span class="upload-state"></span>
-        </div>
-      </div>
-
-      <div class="item-side">
-        <div class="preview-box">
-          <img class="preview-image" alt="" hidden>
-          <div class="no-image">写真なし</div>
-        </div>
-        <button type="button" class="delete-item danger">料理削除</button>
-      </div>
-    </article>
-  </template>
-
-  <script src="menu-data.js"></script>
-  <script type="module" src="admin.js"></script>
+<script src="menu-data.js"></script>
+<script type="module" src="admin.js"></script>
 </body>
 </html>
