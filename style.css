@@ -117,11 +117,11 @@ body {
     "Hiragino Mincho ProN",
     serif;
 
-  font-size: clamp(2.5rem, 9vw, 5rem);
+  font-size: clamp(2rem, 7.5vw, 4rem);
 
   font-weight: 600;
 
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
 }
 
 .subtitle {
