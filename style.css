@@ -790,3 +790,11 @@ footer p {
     font-size: 0.9rem;
   }
 }
+.menu-item.no-image {
+  min-height: 0;
+}
+
+.menu-item.no-image .item-body {
+  min-height: 0;
+  height: auto;
+}
