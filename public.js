@@ -73,11 +73,11 @@ document.addEventListener("keydown", (event) => event.key === "Escape" && closeM
 
 function createCard(item, compact = false) {
   const card = document.createElement("article");
-  card.className = [compact ? "recommended-card" : "menu-item", item.imageUrl ? "has-image" : "", item.soldOut ? "is-sold-out" : ""].filter(Boolean).join(" ");
-  const badges = [
-    item.recommended ? '<span class="badge recommended-badge">Recommended</span>' : "",
-    item.seasonal ? '<span class="badge seasonal-badge">Seasonal</span>' : ""
-  ].join("");
+  card.className = [
+  compact ? "recommended-card" : "menu-item",
+  item.imageUrl ? "has-image" : "no-image",
+  item.soldOut ? "is-sold-out" : ""
+].filter(Boolean).join(" ");
 
   card.innerHTML = `
     ${item.imageUrl ? `<button class="image-button" type="button"><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" loading="lazy"></button>` : ""}
