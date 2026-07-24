@@ -744,7 +744,7 @@ footer p {
   }
 
   .hero h1 {
-    font-size: clamp(3.2rem, 19vw, 5rem);
+    font-size: clamp(2.5rem, 12vw, 5rem);
   }
 
   .subtitle {
