@@ -1,4 +1,4 @@
-import { auth, authReady, firebaseConfig, menuDocument, storage } from "./firebase.js?v=2";
+import { auth, authReady, firebaseConfig, menuDocument, storage } from "./firebase.js?v=3";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -238,6 +238,14 @@ $("resetPasswordButton").onclick = async () => {
 $("logoutButton").onclick = () => signOut(auth);
 
 $("addSectionButton").onclick = () => editor.appendChild(buildSection({ id: "", title: "", description: "", items: [] }));
+
+$("importOriginalButton").onclick = () => {
+  const original = fallbackData();
+  if (!original.length) return setStatus("取り込み用メニューデータが見つかりません。", true);
+  if (!confirm("現在編集中の内容を、以前のメニューデータに置き換えますか？")) return;
+  render(clone(original));
+  setStatus("以前のメニューデータを取り込みました。内容を確認して「更新する」を押してください。");
+};
 $("saveDraftButton").onclick = () => {
   const sections = collectRawSections().map((section) => ({ id: section.id, title: section.title, description: section.description, items: section.itemNodes.map((node) => ({ id: node.dataset.itemId || uid(), name: node.querySelector(".item-name").value.trim(), meta: node.querySelector(".item-meta").value.trim(), price: Number(node.querySelector(".item-price").value) || 0, imageUrl: node.dataset.imageUrl || "", storagePath: node.dataset.storagePath || "", recommended: node.querySelector(".item-recommended").checked, seasonal: node.querySelector(".item-seasonal").checked, soldOut: node.querySelector(".item-soldout").checked, hidden: node.querySelector(".item-hidden").checked })) }));
   localStorage.setItem(DRAFT_KEY, JSON.stringify(sections));
