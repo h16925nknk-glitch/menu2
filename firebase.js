@@ -15,17 +15,15 @@ import {
   getStorage
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
-
 export const firebaseConfig = {
-  apiKey: "ここは今のEnglish MenuのapiKey",
+  apiKey: "今のEnglish MenuのapiKey",
   authDomain: "english-menu.firebaseapp.com",
   projectId: "english-menu",
   storageBucket: "english-menu.firebasestorage.app",
   messagingSenderId: "448630440287",
-  appId: "ここは今のEnglish MenuのappId",
+  appId: "今のEnglish MenuのappId",
   measurementId: "G-M71BGHBPDR"
 };
-
 
 export const app = initializeApp(firebaseConfig);
 
@@ -39,7 +37,6 @@ export const authReady = setPersistence(
 });
 
 export const db = getFirestore(app);
-
 export const storage = getStorage(app);
 
 export const menuDocument = doc(
