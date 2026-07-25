@@ -1,4 +1,4 @@
-import { menuDocument } from "./firebase.js";
+import { menuDocument } from "./firebase.js?v=20260725-1";
 import { onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const $ = (id) => document.getElementById(id);
