@@ -16,12 +16,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 export const firebaseConfig = {
-  apiKey: "今のEnglish MenuのapiKey",
+  apiKey: "AIzaSyCSeiXf-HyIGXtaoKRr4BPpl_-FRoMlEgg",
   authDomain: "english-menu.firebaseapp.com",
   projectId: "english-menu",
   storageBucket: "english-menu.firebasestorage.app",
   messagingSenderId: "448630440287",
-  appId: "今のEnglish MenuのappId",
+  appId: "1:448630440287:web:57033ee745555a02ca36ea",
   measurementId: "G-M71BGHBPDR"
 };
 
