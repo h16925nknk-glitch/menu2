@@ -29,16 +29,52 @@ function escapeHtml(value = "") {
 }
 
 function normalizeItem(item = {}) {
+  const rawPrice =
+    item.price ??
+    item.priceYen ??
+    item.priceJPY ??
+    item.amount ??
+    0;
+
   return {
     id: item.id || crypto.randomUUID(),
-    name: item.name || "",
-    meta: item.meta || "",
-    price: Number(item.price) || 0,
-    imageUrl: item.imageUrl || item.image || "",
-    recommended: !!item.recommended,
-    seasonal: !!item.seasonal,
-    soldOut: !!item.soldOut,
-    hidden: !!item.hidden,
+
+    name:
+      item.name ||
+      item.nameEn ||
+      item.englishName ||
+      item.title ||
+      "",
+
+    meta:
+      item.meta ||
+      item.description ||
+      item.descriptionEn ||
+      item.detail ||
+      "",
+
+    price: Number(
+      String(rawPrice)
+        .replace(/[¥￥,\s]/g, "")
+    ) || 0,
+
+    imageUrl:
+      item.imageUrl ||
+      item.image ||
+      item.photoUrl ||
+      "",
+
+    recommended:
+      Boolean(item.recommended ?? item.isRecommended),
+
+    seasonal:
+      Boolean(item.seasonal ?? item.isSeasonal),
+
+    soldOut:
+      Boolean(item.soldOut ?? item.isSoldOut),
+
+    hidden:
+      Boolean(item.hidden ?? item.isHidden),
   };
 }
 
