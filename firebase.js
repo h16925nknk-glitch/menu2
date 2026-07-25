@@ -7,15 +7,27 @@ import {
 import { getFirestore, doc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyAtqq9NmhM9x82ZjvGgVJE3MLEUM-E4pQk",
-  authDomain: "sake-flow.firebaseapp.com",
-  projectId: "sake-flow",
-  storageBucket: "sake-flow.firebasestorage.app",
-  messagingSenderId: "70136248883",
-  appId: "1:70136248883:web:055fc162a3b78612fac146",
-  measurementId: "G-D0QG95KM2J"
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCSeiXf-HyIGXtaoKRr4BPpl_-FRoMlEgg",
+  authDomain: "english-menu.firebaseapp.com",
+  projectId: "english-menu",
+  storageBucket: "english-menu.firebasestorage.app",
+  messagingSenderId: "448630440287",
+  appId: "1:448630440287:web:57033ee745555a02ca36ea",
+  measurementId: "G-M71BGHBPDR"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
