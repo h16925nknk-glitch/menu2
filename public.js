@@ -26,9 +26,24 @@ function escapeHtml(value = "") {
     '"': "&quot;",
     "'": "&#039;"
   }[c]));
-}
-
 function normalizeItem(item = {}) {
+  // menu-data.jsの配列形式
+  // ["料理名", "産地・説明", 価格]
+  if (Array.isArray(item)) {
+    return {
+      id: crypto.randomUUID(),
+      name: item[0] || "",
+      meta: item[1] || "",
+      price: Number(item[2]) || 0,
+      imageUrl: item[3] || "",
+      recommended: Boolean(item[4]),
+      seasonal: Boolean(item[5]),
+      soldOut: Boolean(item[6]),
+      hidden: Boolean(item[7]),
+    };
+  }
+
+  // 管理画面・Firestoreのオブジェクト形式
   const rawPrice =
     item.price ??
     item.priceYen ??
@@ -53,10 +68,10 @@ function normalizeItem(item = {}) {
       item.detail ||
       "",
 
-    price: Number(
-      String(rawPrice)
-        .replace(/[¥￥,\s]/g, "")
-    ) || 0,
+    price:
+      Number(
+        String(rawPrice).replace(/[¥￥,\s]/g, "")
+      ) || 0,
 
     imageUrl:
       item.imageUrl ||
@@ -64,20 +79,23 @@ function normalizeItem(item = {}) {
       item.photoUrl ||
       "",
 
-    recommended:
-      Boolean(item.recommended ?? item.isRecommended),
+    recommended: Boolean(
+      item.recommended ?? item.isRecommended
+    ),
 
-    seasonal:
-      Boolean(item.seasonal ?? item.isSeasonal),
+    seasonal: Boolean(
+      item.seasonal ?? item.isSeasonal
+    ),
 
-    soldOut:
-      Boolean(item.soldOut ?? item.isSoldOut),
+    soldOut: Boolean(
+      item.soldOut ?? item.isSoldOut
+    ),
 
-    hidden:
-      Boolean(item.hidden ?? item.isHidden),
+    hidden: Boolean(
+      item.hidden ?? item.isHidden
+    ),
   };
 }
-
 function normalizeSections(sections = []) {
   return sections.map((section, i) => ({
     id: section.id || `section-${i + 1}`,
