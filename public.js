@@ -279,11 +279,23 @@ onSnapshot(
       ? snapshot.data()
       : null;
 
-    const sections = Array.isArray(data?.sections)
-      ? data.sections
-      : fallbackMenu();
+   const liveSections = Array.isArray(data?.sections)
+  ? data.sections
+  : [];
 
-    render(sections);
+const hasValidItems = liveSections.some((section) =>
+  Array.isArray(section.items) &&
+  section.items.some((item) =>
+    String(item.name || item.nameEn || item.title || "").trim() !== "" ||
+    Number(item.price || item.priceYen || item.amount || 0) > 0
+  )
+);
+
+const sections = hasValidItems
+  ? liveSections
+  : fallbackMenu();
+
+render(sections);
   },
 
   (error) => {
