@@ -26,6 +26,7 @@ function escapeHtml(value = "") {
     '"': "&quot;",
     "'": "&#039;"
   }[c]));
+}
 function normalizeItem(item = {}) {
   // menu-data.jsの配列形式
   // ["料理名", "産地・説明", 価格]
