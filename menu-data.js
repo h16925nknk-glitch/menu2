@@ -1,4 +1,4 @@
-window.MENU_DATA = [
+const MENU_DATA = [
   {
     id: "sashimi",
     title: "Seasonal Sashimi",
@@ -34,7 +34,7 @@ window.MENU_DATA = [
   {
     id: "hot-dishes",
     title: "Hot Dishes",
-    description: "Signature dishes from Boyorou and Echizen Kaninobou, served in Aoyama.",
+    description: "Signature dishes from Boyoro and Echizen Kaninobou, served in Aoyama.",
     items: [
       ["Female Snow Crab Gratin", "Mikuni / Echizen", 1870],
       ["Sweet Shrimp Shumai", "", 1430],
